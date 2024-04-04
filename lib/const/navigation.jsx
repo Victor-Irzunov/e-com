@@ -74,19 +74,15 @@ export const HEADER_NAV_MOBIL2 = [
 
 export const CATEGORY_LINKS = [
     {
+        label: "Главная",
+        path: "/",
+    },
+    {
         label: "Телефоны",
-        path: "/smartphones",
+        path: "/telefony",
     },
     {
         label: "Ноутбуки",
-        path: "/laptops",
-    },
-    {
-        label: "Ароматы",
-        path: "/fragrances",
-    },
-    {
-        label: "Для дома",
-        path: "/home-decoration",
+        path: "/noutbuki",
     },
 ]

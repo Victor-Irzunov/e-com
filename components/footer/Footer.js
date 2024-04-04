@@ -20,7 +20,7 @@ function Footer() {
                         <div className="flex justify-center text-secondary sm:justify-start">
                             <Link href={"/"} className="flex items-center gap-2 text-secondary text-xl font-semibold">
                                 <RiShoppingBasket2Fill fontSize={30} />
-                                <span className="pt-0.5">Basket</span>
+                                <span className="pt-0.5">Интернет-магазин</span>
                             </Link>
                         </div>
 
@@ -67,82 +67,83 @@ function Footer() {
 
                     <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:col-span-2">
                         <div className="text-center sm:text-left">
-                            <p className="text-lg font-medium text-gray-900">About Us</p>
+                            <p className="text-lg font-medium text-gray-900">
+                                О нас
+                            </p>
 
                             <ul className="mt-8 space-y-4 text-sm">
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Find Store
+                                        История
                                     </Link>
                                 </li>
 
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Locations
+                                        Блог
                                     </Link>
                                 </li>
 
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Blogs & News
+                                        Новости
                                     </Link>
                                 </li>
 
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Affiliate Service
+                                        Регион работы
                                     </Link>
                                 </li>
                             </ul>
                         </div>
 
                         <div className="text-center sm:text-left">
-                            <p className="text-lg font-medium text-gray-900">Informations</p>
+                            <p className="text-lg font-medium text-gray-900">
+                                Информация
+                            </p>
 
                             <ul className="mt-8 space-y-4 text-sm">
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Help Center
+                                        Оплата
                                     </Link>
                                 </li>
 
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Refund Queries
+                                        Доставка
                                     </Link>
                                 </li>
 
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Shipping QnA
+                                        Возврат
                                     </Link>
                                 </li>
 
-                                <li>
-                                    <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Blogs
-                                    </Link>
-                                </li>
                             </ul>
                         </div>
 
                         <div className="text-center sm:text-left">
-                            <p className="text-lg font-medium text-gray-900">Support</p>
+                            <p className="text-lg font-medium text-gray-900">
+                                Поддержка
+                            </p>
 
                             <ul className="mt-8 space-y-4 text-sm">
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        FAQs
+                                        Вопрос-ответ
                                     </Link>
                                 </li>
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Support
+                                        Тех. поддержка
                                     </Link>
                                 </li>
                                 <li>
                                     <Link className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                        Contact Us
+                                        Контакты
                                     </Link>
                                 </li>
                             </ul>
@@ -159,7 +160,7 @@ function Footer() {
                                     >
                                         <RiMessage2Line fontSize={18} />
 
-                                        <span className="flex-1 text-gray-700">john@doe.com</span>
+                                        <span className="flex-1 text-gray-700">info@gmail.com</span>
                                     </Link>
                                 </li>
 
@@ -170,7 +171,9 @@ function Footer() {
                                     >
                                         <RiPhoneLine fontSize={18} />
 
-                                        <span className="flex-1 text-gray-700">0123456789</span>
+                                        <span className="flex-1 text-gray-700">
+                                            +375 29 000-00-00
+                                        </span>
                                     </Link>
                                 </li>
 
@@ -178,7 +181,7 @@ function Footer() {
                                     <RiMapPinLine fontSize={18} />
 
                                     <address className="-mt-0.5 flex-1 not-italic text-gray-700">
-                                        213 Lane, London, United Kingdom
+                                        г. Минск ул. К.Туровского 8
                                     </address>
                                 </li>
                             </ul>
@@ -189,15 +192,15 @@ function Footer() {
                 <div className="mt-12 border-t border-gray-300 pt-6">
                     <div className="text-center sm:flex sm:justify-between sm:text-left">
                         <div className="text-sm text-gray-500 flex items-center gap-3">
-                            <Link className="inline-block text-secondary transition hover:text-secondary/75" href="/">
-                                Terms & Conditions
-                            </Link>
-                            <Link className="inline-block text-secondary transition hover:text-secondary/75" href="/">
-                                Privacy Policy
+
+                            <Link className="inline-block text-secondary transition hover:text-secondary/75"
+                                href={`${process.env.NEXT_PUBLIC_BASE_URL}/personal-info`}
+                            >
+                                Политика конфиденциальности
                             </Link>
                         </div>
 
-                        <p className="mt-4 text-sm text-gray-500 sm:order-first sm:mt-0">&copy; 2023 Basket</p>
+                        <p className="mt-4 text-sm text-gray-500 sm:order-first sm:mt-0">&copy; 2024 Интернет-магазин</p>
                     </div>
                 </div>
             </div>

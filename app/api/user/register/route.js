@@ -9,7 +9,6 @@ export async function POST(req, res) {
 	try {
 		const body = await req.json()
 		const { email, password, isAdmin } = body;
-		console.log("🚀 🚀 🚀  _ file: route.js:12 _ POST _ body:", body)
 
 		const userExists = await prisma.user.findFirst({
 			where: { email },

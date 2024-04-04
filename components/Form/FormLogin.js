@@ -28,12 +28,10 @@ const LoginForm = ({ setIsActive }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log('Данные для сохранения в базе данных:', formData);
 		login(formData)
 			.then(data => {
 				console.log("🚀 🚀 🚀  _ file: FormLogin.js:32 _ handleSubmit _ data:", data)
 				if (data) {
-
 					setIsActiveAlert(true)
 					setFormData({
 						email: '',

@@ -1,9 +1,11 @@
 "use client"
 import Link from "next/link";
 import { useContext, useState } from "react";
-import { RiAddFill, RiCheckboxCircleFill, RiShieldCheckFill, RiSubtractFill } from "react-icons/ri"
+import { RiAddFill, RiCheckboxCircleFill, RiShieldCheckFill, RiSubtractFill } from "react-icons/ri";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import FormOrder from "./Form/FormOrder";
 import { MyContext } from "@/contexts/MyContextProvider";
+
 
 
 const ImgProductDetails = ({ product }) => {
@@ -52,26 +54,38 @@ const ImgProductDetails = ({ product }) => {
 		setIsModalOpen(false);
 	};
 
+	const handlePrevImage = () => {
+		const prevIndex = (selectedImageIndex - 1 + img.length) % img.length;
+		setSelectedImageIndex(prevIndex);
+	};
+
+	const handleNextImage = () => {
+		const nextIndex = (selectedImageIndex + 1) % img.length;
+		setSelectedImageIndex(nextIndex);
+	};
+
+	const img = JSON.parse(product.images)
+
 	return (
 		<div className="bg-white p-6 rounded-lg border border-gray-300 flex sd:flex-row xz:flex-col gap-6">
 			<div>
 				<div className="sd:w-[32rem] xz:w-auto aspect-[4/3] overflow-hidden rounded-lg border border-gray-300">
-					<div className="max-w-full"
-						onClick={handleImageView}
-					>
-						<img src={images[selectedImageIndex]} alt="" className="w-full h-full object-cover" />
+					<div className="max-w-full cursor-pointer" onClick={handleImageView}>
+						<img src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${img[selectedImageIndex].image}`} alt="" className="w-full h-full object-cover" />
 					</div>
 				</div>
-				<div className="flex items-center gap-3 mt-6 overflow-x-auto">
-					{images.map((img, idx) => (
-						<div
-							key={idx}
-							className="w-20 h-16 rounded border border-gray-300 overflow-hidden cursor-pointer"
-							onClick={() => handleImageClick(idx)}
-						>
-							<img src={img} alt="" className="w-full h-full object-cover" />
-						</div>
-					))}
+				<div className="flex items-center gap-3 mt-6 overflow-x-auto sd:w-[32rem] xz:w-auto">
+					<div className="flex">
+						{JSON.parse(product.images).map((img, idx) => (
+							<div
+								key={idx}
+								className="w-20 h-16 rounded border border-gray-300 mx-1 overflow-hidden cursor-pointer"
+								onClick={() => handleImageClick(idx)}
+							>
+								<img src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${img.image}`} alt="" className="w-full h-full object-cover" />
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
 
@@ -142,7 +156,7 @@ const ImgProductDetails = ({ product }) => {
 						Быстрая покупка
 					</button>
 					<button
-						className="btn btn-accent capitalize"
+						className="btn btn-accent capitalize text-white"
 						onClick={handleAddToCart}
 					>
 						В корзину
@@ -154,16 +168,21 @@ const ImgProductDetails = ({ product }) => {
 				</div>
 			</div>
 
-
 			{isModalOpen && (
 				<div className="fixed inset-0 z-10 flex items-center justify-center">
 					<div className="fixed inset-0 bg-black opacity-50"></div>
-					<div className="relative bg-white p-8 rounded-lg max-w-2xl w-full">
+					<div className="relative bg-white p-8 rounded-lg max-w-2xl w-full cursor-pointer">
 						<img
-							src={images[selectedImageIndex]}
+							src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${img[selectedImageIndex].image}`}
 							alt=""
 							className="w-full h-full object-cover rounded-lg"
 						/>
+						<div className="absolute top-1/2 -translate-x-1/2 left-10 cursor-pointer" onClick={handlePrevImage}>
+							<BsChevronLeft className="text-3xl text-gray-700 hover:text-gray-900" />
+						</div>
+						<div className="absolute top-1/2 -translate-x-1/2 right-2 cursor-pointer" onClick={handleNextImage}>
+							<BsChevronRight className="text-3xl text-gray-700 hover:text-gray-900" />
+						</div>
 						<div className="absolute top-4 right-4 cursor-pointer" onClick={closeModal}>
 							<span className="text-3xl font-bold">✕</span>
 						</div>
@@ -176,8 +195,8 @@ const ImgProductDetails = ({ product }) => {
 					<form method="dialog">
 						<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 					</form>
-					<h3 className="font-bold text-lg">Ваш заказ: {title}</h3>
-					<h4 className="font-bold text-base">Cумма заказа: {price.toFixed(2)} руб</h4>
+					<p className="font-bold text-lg">Ваш заказ: {title}</p>
+					<p className="font-bold text-base">Cумма заказа: {price.toFixed(2)} руб</p>
 					<p className="py-4 text-xs">Заполните, пожалуйста, данные формы, чтобы быстро оформить заказ.</p>
 					<div className="modal-action">
 						<FormOrder product={product} closeModalOrder={closeModalOrder} />
@@ -191,11 +210,11 @@ const ImgProductDetails = ({ product }) => {
 
 			<dialog id="my_modal_1" className="modal">
 				<div className="modal-box">
-					<h3 className="font-bold text-lg mb-3">Товар добавлен в корзину</h3>
-					<h4 className="font-bold text-lg">{title}</h4>
+					<p className="font-bold text-lg mb-3">Товар добавлен в корзину</p>
+					<p className="font-bold text-lg">{title}</p>
 					<div className='flex items-center justify-between'>
 						<div className="w-[7rem] h-[7rem] mt-5 mb-3 rounded-lg overflow-hidden border border-gray-300">
-							<img src={images[0]} alt="" className="w-full h-full object-cover" />
+							<img src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${img[0].image}`} alt="" className="w-full h-full object-cover" />
 						</div>
 						<strong className="text-2xl font-medium text-gray-800">{price.toFixed(2)} руб</strong>
 					</div>

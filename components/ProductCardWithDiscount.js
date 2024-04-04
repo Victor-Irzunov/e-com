@@ -3,14 +3,25 @@ import Link from "next/link"
 import React from "react"
 
 function ProductCardWithDiscount({ product }) {
-    const { name, discount, image } = product
+    const { title, thumbnail, category, titleLink, subcategory, discountPercentage } = product
+
+    const img = JSON.parse(thumbnail)[0].image
     return (
-        <Link href="/product" className="group w-full flex flex-col gap-2 py-3 px-3 items-center">
-            <div className="group-hover:scale-105 transition-transform">
-                <Image src={image} width={140} height={140} alt="" />
+        <Link
+            href={`${process.env.NEXT_PUBLIC_BASE_URL}/${category}/${subcategory}/${titleLink}`}
+            className="group h-full w-full flex flex-col gap-2  py-3 px-3 items-center"
+        >
+            <div className="group-hover:scale-105 transition-transform min-h-[60%]">
+                <img src={`${process.env.NEXT_PUBLIC_BASE_URL}/uploads/${img}`}
+                    width={140} height={140}
+                    alt={title} />
             </div>
-            <strong className="block font-normal text-gray-900">{name}</strong>
-            <span className="badge badge-success text-green-600 bg-opacity-30">{discount}</span>
+            <strong className="block font-normal text-gray-900 sd:text-sm xz:text-base">
+                {title}
+            </strong>
+            <span className="badge badge-success text-green-600 bg-opacity-30">
+                - {discountPercentage}%
+            </span>
         </Link>
     )
 }

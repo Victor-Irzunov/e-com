@@ -1,22 +1,34 @@
-import React from "react"
-import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri"
+import React from "react";
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 
-function Pagination() {
+function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    const handleClick = (pageNumber) => {
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            onPageChange(pageNumber);
+        }
+    };
+
     return (
-        <div className="join mx-auto">
-            <button className="join-item btn bg-white border border-gray-300 rounded-lg btn-sm">
+        <div className="flex justify-center mt-20">
+            <button className="mr-2 px-4 py-2 border border-gray-300 rounded-lg" onClick={() => handleClick(currentPage - 1)}>
                 <RiArrowLeftSLine />
             </button>
-            <button className="join-item btn btn-secondary rounded-lg btn-sm">1</button>
-            <button className="join-item btn bg-white border border-gray-300 rounded-lg btn-sm">2</button>
-            <button className="join-item btn bg-white border border-gray-300 rounded-lg btn-sm">3</button>
-            <button className="join-item btn bg-white border border-gray-300 rounded-lg btn-sm">4</button>
-            <button className="join-item btn bg-white border border-gray-300 rounded-lg btn-sm">...</button>
-            <button className="join-item btn bg-white border border-gray-300 rounded-lg btn-sm">
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+                <button
+                    key={page}
+                    className={`mx-1 px-4 py-2 border border-gray-300 rounded-lg ${currentPage === page ? 'bg-gray-200' : ''}`}
+                    onClick={() => handleClick(page)}
+                >
+                    {page}
+                </button>
+            ))}
+            <button className="ml-2 px-4 py-2 border border-gray-300 rounded-lg" onClick={() => handleClick(currentPage + 1)}>
                 <RiArrowRightSLine />
             </button>
         </div>
-    )
+    );
 }
 
-export default Pagination
+export default Pagination;

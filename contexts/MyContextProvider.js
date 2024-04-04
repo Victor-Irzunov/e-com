@@ -11,7 +11,7 @@ const MyContextProvider = ({ children }) => {
   const [dataApp] = useState(new DataStore())
 
   const updateState = () => {
-    setIsState(i=>!i);
+    setIsState(i => !i);
   };
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const MyContextProvider = ({ children }) => {
         console.log('🚀 🚀 🚀dataUser err:', data)
       })
   }, [user])
+
 
   useEffect(() => {
     // if (typeof window !== "undefined") {

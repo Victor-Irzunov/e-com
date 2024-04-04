@@ -6,15 +6,17 @@ import jwt from 'jsonwebtoken';
 const prisma = new PrismaClient();
 
 export async function POST(req, res) {
+  //пароль 123
 	try {
 		const body = await req.json()
     const { email, password } = body;
+
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
     if (!user) {
-      return new NextResponse('Такого пользователя не существует, проверьте email и пароль', { status: 401 });
+      return new NextResponse('Проверьте email и пароль, или такого пользователя не существует', { status: 401 });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -23,7 +25,9 @@ export async function POST(req, res) {
       return new NextResponse('Неправильный email или пароль', { status: 401 });
     }
 
-   
+    if (!user.isAdmin) {
+      return new NextResponse('Вы не администратор! Вход разрешен только администраторам!', { status: 403 });
+    }
 
     const token = jwt.sign(
       { email: user.email, id: user.id, isAdmin: user.isAdmin },

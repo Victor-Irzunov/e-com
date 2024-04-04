@@ -1,4 +1,3 @@
-
 "use client"
 import CartItem from "@/components/CartItem"
 import {
@@ -6,10 +5,12 @@ import {
     RiDeleteBin2Line,
     RiShieldCheckFill,
 } from "react-icons/ri"
-import RecommendedProducts from "./RecommendedProducts"
+
 import { useEffect, useRef, useState } from "react"
 import OrderFormComp from "./Form/OrderFormComp"
 import { useRouter } from 'next/navigation'
+import RecommendedProduct from "./RecommendedProduct"
+import { getOneProduct } from "@/http/adminAPI"
 
 function UserCart({ data, setData }) {
     const [isActive, setIsActive] = useState(false);
@@ -24,19 +25,17 @@ function UserCart({ data, setData }) {
 
     const handleContinueShopping = () => {
         router.back();
-      };
-    
+    };
 
     const handleDeleteProduct = async (productId) => {
         try {
             const cartData = JSON.parse(localStorage.getItem("cart")) || [];
             const updatedCartData = cartData.filter((item) => item.id !== productId);
             localStorage.setItem("cart", JSON.stringify(updatedCartData));
-
             const promises = updatedCartData.map(async (item) => {
-                const response = await fetch(`https://dummyjson.com/products/${item.id}`);
-                const productData = await response.json();
-                return { ...productData, quantity: item.quantity };
+                const response = await getOneProduct(item.id);
+                // const productData = await response.json();
+                return { ...response, quantity: item.quantity };
             });
 
             const updatedProductsData = await Promise.all(promises);
@@ -90,7 +89,7 @@ function UserCart({ data, setData }) {
 
 
     const totalAmount = data.reduce((acc, product) => {
-        return acc +(product.price * product.quantity / 100 * product.discountPercentage) + product.price * product.quantity;
+        return acc + (product.price * product.quantity / 100 * product.discountPercentage) + product.price * product.quantity;
     }, 0);
 
     const discountAmount = data.reduce((acc, product) => {
@@ -102,20 +101,19 @@ function UserCart({ data, setData }) {
 
     const handleDeleteAll = () => {
         try {
-          localStorage.removeItem("cart");
-          setData(null);
-          setIsActive(false);
+            localStorage.removeItem("cart");
+            setData(null);
+            setIsActive(false);
         } catch (error) {
-          console.error("Error deleting all products:", error);
+            console.error("Error deleting all products:", error);
         }
-      };
+    };
 
     return (
         <div className="my-2">
-            <h3 className="mb-4 text-xl font-medium">Корзина (4)</h3>
+            <h3 className="mb-4 text-xl font-medium">Корзина ({data.length})</h3>
             <div className="flex sd:flex-row xz:flex-col gap-6 mb-10">
                 <div className="flex-1 rounded-lg border border-gray-300 p-4 bg-white flex flex-col gap-6">
-
                     {
                         data && data.map(el => {
                             return (
@@ -169,7 +167,7 @@ function UserCart({ data, setData }) {
                         <hr className="my-2" />
                         <div className="flex items-center justify-between font-semibold my-2">
                             <span>Итого:</span>
-                            <span>{finalTotal.toFixed(2)}</span>
+                            <span>{finalTotal.toFixed(2)} руб.</span>
                         </div>
                         <button
                             className="btn btn-secondary capitalize text-base"
@@ -190,7 +188,7 @@ function UserCart({ data, setData }) {
                     :
                     null
             }
-            <RecommendedProducts />
+            <RecommendedProduct />
         </div>
     )
 }
