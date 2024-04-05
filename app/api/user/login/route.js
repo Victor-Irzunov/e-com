@@ -16,7 +16,7 @@ export async function POST(req, res) {
     });
 
     if (!user) {
-      return new NextResponse('Проверьте email и пароль, или такого пользователя не существует', { status: 401 });
+      return new NextResponse('Проверьте email или пароль, или такого пользователя не существует', { status: 401 });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -25,9 +25,9 @@ export async function POST(req, res) {
       return new NextResponse('Неправильный email или пароль', { status: 401 });
     }
 
-    if (!user.isAdmin) {
-      return new NextResponse('Вы не администратор! Вход разрешен только администраторам!', { status: 403 });
-    }
+    // if (!user.isAdmin) {
+    //   return new NextResponse('Вы не администратор! Вход разрешен только администраторам!', { status: 403 });
+    // }
 
     const token = jwt.sign(
       { email: user.email, id: user.id, isAdmin: user.isAdmin },

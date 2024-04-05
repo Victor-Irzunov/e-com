@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { RiAddFill, RiSubtractFill } from "react-icons/ri";
 
 function CartItem({ product, onDelete, onDecrement, onIncrement }) {
@@ -21,7 +22,9 @@ function CartItem({ product, onDelete, onDecrement, onIncrement }) {
             </div>
             <div className="flex flex-col flex-1 mt-4 xs:mt-0">
                 <h2 className="text-lg">
-                    {product.title}
+                    <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/${product.category}/${product.subcategory}/${product.titleLink}`}>
+                        {product.title}
+                    </Link>
                 </h2>
                 <div className="text-sm text-gray-400">
                     <p>Описание: {product.description}</p>

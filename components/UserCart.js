@@ -1,21 +1,23 @@
 "use client"
-import CartItem from "@/components/CartItem"
+import CartItem from "@/components/CartItem";
 import {
     RiArrowRightLine,
     RiDeleteBin2Line,
     RiShieldCheckFill,
-} from "react-icons/ri"
-
-import { useEffect, useRef, useState } from "react"
-import OrderFormComp from "./Form/OrderFormComp"
-import { useRouter } from 'next/navigation'
-import RecommendedProduct from "./RecommendedProduct"
-import { getOneProduct } from "@/http/adminAPI"
+} from "react-icons/ri";
+import { useContext, useEffect, useRef, useState } from "react";
+import OrderFormComp from "./Form/OrderFormComp";
+import { useRouter } from 'next/navigation';
+import RecommendedProduct from "./RecommendedProduct";
+import { getOneProduct } from "@/http/adminAPI";
+import { MyContext } from "@/contexts/MyContextProvider";
+import Link from "next/link";
 
 function UserCart({ data, setData }) {
+    const { user, dataApp } = useContext(MyContext);
     const [isActive, setIsActive] = useState(false);
     const orderFormRef = useRef(null);
-    const router = useRouter()
+    const router = useRouter();
 
     useEffect(() => {
         if (isActive && orderFormRef.current) {
@@ -34,10 +36,8 @@ function UserCart({ data, setData }) {
             localStorage.setItem("cart", JSON.stringify(updatedCartData));
             const promises = updatedCartData.map(async (item) => {
                 const response = await getOneProduct(item.id);
-                // const productData = await response.json();
                 return { ...response, quantity: item.quantity };
             });
-
             const updatedProductsData = await Promise.all(promises);
             setData(updatedProductsData);
         } catch (error) {
@@ -54,7 +54,7 @@ function UserCart({ data, setData }) {
             const cartData = JSON.parse(localStorage.getItem("cart")) || [];
             const updatedCartData = cartData.map((item) =>
                 item.id === productId
-                    ? { ...item, quantity: Math.max(1, item.quantity - 1) } // Decrease quantity, but ensure it doesn't go below 1
+                    ? { ...item, quantity: Math.max(1, item.quantity - 1) }
                     : item
             );
             localStorage.setItem("cart", JSON.stringify(updatedCartData));
@@ -86,7 +86,6 @@ function UserCart({ data, setData }) {
             console.error("Error incrementing product quantity:", error);
         }
     };
-
 
     const totalAmount = data.reduce((acc, product) => {
         return acc + (product.price * product.quantity / 100 * product.discountPercentage) + product.price * product.quantity;
@@ -127,7 +126,6 @@ function UserCart({ data, setData }) {
                             )
                         })
                     }
-
                     <div className="mt-8 flex sd:flex-row xz:flex-col justify-between">
                         <button
                             className="btn btn-sm btn-error btn-outline capitalize sd:mb-0 xz:mb-5"
@@ -145,7 +143,7 @@ function UserCart({ data, setData }) {
                 </div>
                 <div className="sd:w-[20rem] xz:w-full flex flex-col gap-6">
                     <div className="rounded-lg border border-gray-300 p-4 bg-white text-gray-600 flex flex-col">
-                        <span className="pb-2">Есть купон?</span>
+                        <span className="pb-2">Есть промокод?</span>
                         <div className="join">
                             <input
                                 type="text"
@@ -183,8 +181,39 @@ function UserCart({ data, setData }) {
                 </div>
             </div>
             {
-                isActive ?
-                    <OrderFormComp ref={orderFormRef} />
+                isActive && user.isAuth ?
+                    <OrderFormComp ref={orderFormRef} data={data} setIsActive={setIsActive} />
+                    :
+                    null
+            }
+            {
+                isActive && !user.isAuth ?
+                    <div className='mb-32 mt-16'>
+                        <p className='text-lg'>
+                            <span className="font-semibold">
+                                Для оформления заказа вам необходимо
+                            </span> {' '}
+                            <Link
+                                href={{
+                                    pathname: `${process.env.NEXT_PUBLIC_BASE_URL}/login`,
+                                    query: { from: 'korzina' },
+                                }}
+                                className="text-blue-700 underline"
+                            >
+                                {' '}авторизоваться{' '}
+                            </Link>
+                            или
+                            <Link
+                                href={{
+                                    pathname: `${process.env.NEXT_PUBLIC_BASE_URL}/login`,
+                                    query: { from: 'korzina' },
+                                }}
+                                className="text-blue-700 underline"
+                            >
+                                {' '} зарегистрироваться
+                            </Link>
+                        </p>
+                    </div>
                     :
                     null
             }

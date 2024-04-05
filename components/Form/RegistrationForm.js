@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from 'react';
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
-const RegistrationForm = ({setIsActive}) => {
+const RegistrationForm = ({ setIsActive, search }) => {
   const [isActiveAlert, setIsActiveAlert] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
@@ -27,7 +27,7 @@ const RegistrationForm = ({setIsActive}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Данные для сохранения в базе данных:', formData);
+    // console.log('Данные для сохранения в базе данных:', formData);
     registration(formData)
       .then(data => {
         if (data) {
@@ -39,7 +39,11 @@ const RegistrationForm = ({setIsActive}) => {
         }
         setTimeout(() => {
           setIsActiveAlert(false)
-          router.push('/')
+          if (search === 'korzina') {
+            router.push('/korzina')
+          } else {
+            router.push('/')
+          }
         }, 2000)
       })
 

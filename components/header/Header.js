@@ -60,7 +60,7 @@ const Header = observer(() => {
                         </div>
                         <div className="navbar-end gap-1">
                             {
-                                user.userData.isAdmin ?
+                                user.userData?.isAdmin ?
 
                                     <Link
                                         href='/super-admin'

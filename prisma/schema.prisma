@@ -13,8 +13,30 @@ model User {
   email    String   @unique
   password String
   isAdmin  Boolean
+  userData UserData? // Связь с данными пользователя
+  orders   OrderData[] // Связь с заказами
 }
 
+model UserData {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation(fields: [userId], references: [id]) // Связь с пользователем
+  userId   Int       @unique
+  orderId  Int
+  name     String
+  surname  String
+  address  String
+  phone    String
+}
+
+model OrderData {
+  id                   Int      @id @default(autoincrement())
+  user                 User     @relation(fields: [userId], references: [id]) // Связь с пользователем
+  userId               Int
+  orderItems           Json
+  address              String
+  phone                String
+  message              String
+}
 
 model Product {
   id                  Int          @id @default(autoincrement())
@@ -36,5 +58,5 @@ model Product {
   discounts           Boolean
   povsednevnaya       Boolean
   recommended         Boolean
+  orderData           OrderData[] // Противоположное поле отношения
 }
-

@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from 'react';
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 
-
-const LoginForm = ({ setIsActive }) => {
+const LoginForm = ({ setIsActive, search }) => {
 	const [isActiveAlert, setIsActiveAlert] = useState(false)
 	const [formData, setFormData] = useState({
 		email: '',
@@ -13,7 +12,6 @@ const LoginForm = ({ setIsActive }) => {
 	});
 	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
-
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((prevData) => ({
@@ -21,37 +19,34 @@ const LoginForm = ({ setIsActive }) => {
 			[name]: value,
 		}));
 	};
-
 	const handleTogglePassword = () => {
 		setShowPassword((prevShowPassword) => !prevShowPassword);
 	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		login(formData)
 			.then(data => {
-				console.log("🚀 🚀 🚀  _ file: FormLogin.js:32 _ handleSubmit _ data:", data)
 				if (data) {
 					setIsActiveAlert(true)
 					setFormData({
 						email: '',
 						password: '',
 					});
-
 					setTimeout(() => {
 						setIsActiveAlert(false)
 						if (data.isAdmin) {
 							router.push('/super-admin')
-						} else {
+						}
+						else if (search === 'korzina') {
+							router.push('/korzina')
+						}
+						else {
 							router.push('/')
 						}
 					}, 2000)
 				}
-
 			})
-
 	};
-
 	return (
 		<>
 			<form onSubmit={handleSubmit} className="space-y-4">
@@ -70,7 +65,6 @@ const LoginForm = ({ setIsActive }) => {
 						required
 					/>
 				</div>
-
 				<div className="form-control mt-3 relative">
 					<label className="label">
 						<span className="label-text">Пароль</span>
@@ -95,7 +89,6 @@ const LoginForm = ({ setIsActive }) => {
 						</button>
 					</div>
 				</div>
-
 				<div className="form-control mt-6">
 					<button type="submit" className="btn btn-primary">
 						Войти
@@ -122,5 +115,4 @@ const LoginForm = ({ setIsActive }) => {
 		</>
 	);
 };
-
 export default LoginForm;

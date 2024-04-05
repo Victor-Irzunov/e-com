@@ -51,7 +51,7 @@ function Breadcrumbs({ title }) {
         <div className="text-sm breadcrumbs sd:px-2 py-2 xz:px-0">
             <ul className='sd:text-sm xz:text-xs'>
                 <li>
-                    <Link href='/'>
+                    <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/`}>
                         Главная
                     </Link>
                 </li>

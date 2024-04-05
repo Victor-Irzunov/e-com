@@ -12,7 +12,7 @@ export default function Cart() {
 			fetchProducts();
 		}
 	}, [loaded]);
-	
+
 	const fetchProducts = async () => {
 		try {
 			const cartData = JSON.parse(localStorage.getItem("cart")) || [];
@@ -21,7 +21,6 @@ export default function Cart() {
 				return { ...response, quantity: item.quantity };
 			});
 			const productsData = await Promise.all(promises);
-			console.log(productsData);
 			if (productsData.length > 0) {
 				setData(productsData);
 				setLoaded(true);
@@ -31,8 +30,8 @@ export default function Cart() {
 		}
 	};
 	return (
-		<div className="container mx-auto">
-			<Breadcrumbs />
+		<div className="container mx-auto py-10">
+			{/* <Breadcrumbs /> */}
 			{
 				data ?
 					<UserCart data={data} setData={setData} />
