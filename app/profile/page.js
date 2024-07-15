@@ -1,13 +1,25 @@
 "use client"
 import { MyContext } from "@/contexts/MyContextProvider";
+import { userData } from "@/http/userAPI";
 import { Empty } from "antd";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 
 const page = observer(() => {
 	const { user, dataApp } = useContext(MyContext);
+	const [data, setData] = useState({})
+
+	useEffect(() => {
+		userData()
+			.then(data => {
+				if (data) {
+					setData(data)
+				}
+			})
+	}, [])
+			
 
 	const handleLogout = () => {
 		localStorage.removeItem('token_e_com');
@@ -25,8 +37,28 @@ const page = observer(() => {
 					user.userData ?
 						<div className='mt-12'>
 							<p className=''>
-								Ваша почта:	{user.userData.email}
+								Почта:	{user.userData.email}
 							</p>
+							{
+								Object.keys(data).length ?
+									<div className='mt-4'>
+										<p className=''>
+											Имя:	{data.name}
+										</p>
+										<p className=''>
+											Фамилия:	{data.surname}
+										</p>
+										<p className=''>
+											Телефон:	{data.phone}
+										</p>
+										<p className=''>
+											Адрес:	{data.address}
+										</p>
+									</div>
+									:
+									null
+							}
+
 
 							<button
 								className="btn btn-primary mt-9"

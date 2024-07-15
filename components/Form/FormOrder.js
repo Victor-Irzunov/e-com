@@ -1,13 +1,15 @@
 "use client"
 import { MyContext } from '@/contexts/MyContextProvider';
 import { orderProduct } from '@/http/productsAPI';
-import { useContext, useState } from 'react';
+import { userData } from '@/http/userAPI';
+import { useContext, useEffect, useState } from 'react';
 import InputMask from 'react-input-mask'
 
 const FormOrder = ({ closeModalOrder, setIsFormSubmitted, data, setIsActive }) => {
 	const { user } = useContext(MyContext);
 	const [isActive2, setIsActive2] = useState(false)
 	const [tel, setTel] = useState('')
+	const [isBool, setIsBool] =  useState(false)
 	const [formDataForm, setFormDataForm] = useState({
 		name: '',
 		surname: '',
@@ -16,6 +18,20 @@ const FormOrder = ({ closeModalOrder, setIsFormSubmitted, data, setIsActive }) =
 		message: '',
 	});
 
+	useEffect(() => {
+		userData()
+			.then(data => {
+				if (data) {
+					setFormDataForm({
+						name: data.name,
+						surname: data.surname,
+						address: data.address,
+					})
+					setTel(data.phone)
+				}
+			})
+	}, [])
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
@@ -23,10 +39,11 @@ const FormOrder = ({ closeModalOrder, setIsFormSubmitted, data, setIsActive }) =
 
 		const orderItems = data.map(product => ({
 			productId: product.id,
+			title: product.title,
 			quantity: product.quantity,
 			discountPercentage: product.discountPercentage,
 			price: product.price,
-			totalAmount: (product.price * product.quantity ),
+			totalAmount: (product.price * product.quantity),
 		}));
 
 		const orderData = {
@@ -53,6 +70,7 @@ const FormOrder = ({ closeModalOrder, setIsFormSubmitted, data, setIsActive }) =
 						message: '',
 					})
 					setIsActive(false)
+					setIsBool(i=>!i)
 					localStorage.removeItem("cart")
 				}
 			});

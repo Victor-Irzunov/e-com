@@ -33,6 +33,34 @@ export const dataUser = async () => {
         return null
     }
 }
+export const userData = async () => {
+    const token = localStorage.getItem('token_e_com')
+    if (token) {
+        const dataToken = await jwtDecode(token)
+        const { data } = await $host.get('/api/user/user-data', {
+            params: {
+                id: dataToken.id
+            }
+        })
+        return data
+    } else {
+        return null
+    }
+}
+export const orderData = async () => {
+    const token = localStorage.getItem('token_e_com')
+    if (token) {
+        const dataToken = await jwtDecode(token)
+        const { data } = await $host.get('/api/user/order', {
+            params: {
+                id: dataToken.id
+            }
+        })
+        return data
+    } else {
+        return null
+    }
+}
 
 export const getMyAccount = async () => {
     const { data } = await $authHost.get('api/user/account')

@@ -19,7 +19,7 @@ async function getData(category) {
 		 }
 		 return data;
 	} catch (error) {
-		 console.error("Ошибки при запросе статей:", error);
+		 console.error("Ошибки при запросе:", error);
 		 throw error;
 	}
 }
